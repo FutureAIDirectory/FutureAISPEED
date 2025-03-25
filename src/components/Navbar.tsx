@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="container-custom flex items-center justify-between">
-        <a href="/" className="text-xl font-semibold tracking-tight text-primary space-subheader">
+        <a href="/" className="text-xl font-semibold tracking-tight text-primary space-subheader text-metallic-silver">
           Future AI Directory
         </a>
         

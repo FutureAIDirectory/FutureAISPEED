@@ -40,7 +40,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ onCategoryChange }) => 
   return (
     <section id="categories" className="py-16 container-custom">
       <div className="mb-10 text-center animate-fade-in">
-        <h2 className="text-3xl font-bold mb-4">Explore Categories</h2>
+        <h2 className="text-3xl font-bold mb-4 text-metallic-silver space-subheader">Explore Categories</h2>
         <p className="text-foreground/70 max-w-2xl mx-auto">
           Discover AI tools organized by category to find exactly what you need
         </p>

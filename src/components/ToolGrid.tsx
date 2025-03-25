@@ -117,7 +117,7 @@ const ToolGrid: React.FC<ToolGridProps> = ({ category = 'all', searchQuery = '' 
   return (
     <section id="tools" className="py-16 container-custom">
       <div className="mb-10 text-center animate-fade-in">
-        <h2 className="text-3xl font-bold mb-4">Discover AI Tools</h2>
+        <h2 className="text-3xl font-bold mb-4 text-metallic-silver space-subheader">Discover AI Tools</h2>
         <p className="text-foreground/70 max-w-2xl mx-auto">
           Explore our curated collection of the best AI tools to enhance your productivity
         </p>

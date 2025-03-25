@@ -61,7 +61,7 @@ const HeroSection: React.FC = () => {
           
           <h1 
             ref={headerRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 space-header"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 space-header text-metallic-silver"
           >
             Find the perfect AI tool for your next project
           </h1>

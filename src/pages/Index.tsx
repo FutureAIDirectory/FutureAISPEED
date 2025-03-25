@@ -137,14 +137,14 @@ const Index: React.FC = () => {
         
         <ScrollAnimation>
           <div className="container-custom py-12">
-            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Browse Categories</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader text-metallic-silver">Browse Categories</h2>
             <CategoryFilter onCategoryChange={handleCategoryChange} />
           </div>
         </ScrollAnimation>
         
         <ScrollAnimation>
           <div className="container-custom py-12">
-            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Discover AI Tools</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader text-metallic-silver">Discover AI Tools</h2>
             <ToolGrid category={activeCategory} searchQuery={searchQuery} />
           </div>
         </ScrollAnimation>
@@ -152,7 +152,7 @@ const Index: React.FC = () => {
         {/* Companies Table */}
         <ScrollAnimation>
           <div className="container-custom py-12">
-            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Top AI Companies</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader text-metallic-silver">Top AI Companies</h2>
             <CompaniesTable />
           </div>
         </ScrollAnimation>
@@ -162,7 +162,7 @@ const Index: React.FC = () => {
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="container-custom relative z-10">
             <ScrollAnimation className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6 text-white space-subheader">About Future AI Directory</h2>
+              <h2 className="text-3xl font-bold mb-6 text-white space-subheader text-metallic-silver">About Future AI Directory</h2>
               <p className="text-foreground/70 mb-8">
                 Future AI Directory is a carefully curated collection of the best artificial intelligence tools available today. 
                 Our mission is to help professionals, creators, and businesses discover and leverage the power of AI to enhance their work and creative processes.
@@ -178,7 +178,7 @@ const Index: React.FC = () => {
         <section className="py-20 container-custom relative overflow-hidden mars-glow-bg">
           <div className="absolute inset-0 opacity-30 animate-subtle-pulse"></div>
           <ScrollAnimation className="max-w-3xl mx-auto text-center relative z-10">
-            <h2 className="text-3xl font-bold mb-4 text-white space-subheader">Stay Updated</h2>
+            <h2 className="text-3xl font-bold mb-4 text-white space-subheader text-metallic-silver">Stay Updated</h2>
             <p className="text-foreground/70 mb-8">
               Get the latest AI tools and updates delivered directly to your inbox
             </p>

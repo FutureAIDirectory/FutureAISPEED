@@ -36,14 +36,14 @@ const Footer: React.FC = () => {
       <div className="container-custom py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <ScrollAnimation delay={0.1} className="space-y-4">
-            <h3 className="text-lg font-semibold space-subheader">Future AI Directory</h3>
+            <h3 className="text-lg font-semibold space-subheader text-metallic-silver">Future AI Directory</h3>
             <p className="text-sm text-foreground/70">
               Discover and compare the best AI tools for your projects and workflows.
             </p>
           </ScrollAnimation>
           
           <ScrollAnimation delay={0.2}>
-            <h4 className="font-medium mb-4 space-subheader">Explore</h4>
+            <h4 className="font-medium mb-4 space-subheader text-metallic-silver">Explore</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="#tools" className="text-foreground/70 hover:text-foreground transition-all duration-300">AI Tools</a></li>
               <li><a href="#categories" className="text-foreground/70 hover:text-foreground transition-all duration-300">Categories</a></li>
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
           </ScrollAnimation>
           
           <ScrollAnimation delay={0.3}>
-            <h4 className="font-medium mb-4 space-subheader">About</h4>
+            <h4 className="font-medium mb-4 space-subheader text-metallic-silver">About</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="#about" className="text-foreground/70 hover:text-foreground transition-all duration-300">About Us</a></li>
               <li><a href="#" className="text-foreground/70 hover:text-foreground transition-all duration-300">Submit a Tool</a></li>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
           </ScrollAnimation>
           
           <ScrollAnimation delay={0.4}>
-            <h4 className="font-medium mb-4 space-subheader">Legal</h4>
+            <h4 className="font-medium mb-4 space-subheader text-metallic-silver">Legal</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="text-foreground/70 hover:text-foreground transition-all duration-300">Privacy Policy</a></li>
               <li><a href="#" className="text-foreground/70 hover:text-foreground transition-all duration-300">Terms of Service</a></li>
