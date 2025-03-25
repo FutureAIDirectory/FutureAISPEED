@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -17,6 +17,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
+import { Search, Filter } from "lucide-react";
 
 // Define the company data interface
 interface AICompany {
@@ -26,6 +28,20 @@ interface AICompany {
   city: string;
   country: string;
 }
+
+// Categories for filter
+const industryCategories = [
+  "All Industries",
+  "AI Research",
+  "Natural Language Processing",
+  "Image Generation",
+  "Video Generation",
+  "AI Hardware",
+  "Foundation Models",
+  "Enterprise AI",
+  "AI Cloud Services",
+  "Computer Vision"
+];
 
 // Sample top 100 AI companies data
 const aiCompaniesData: AICompany[] = [
@@ -133,48 +149,152 @@ const aiCompaniesData: AICompany[] = [
 
 const CompaniesTable = () => {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 25;
-  const totalPages = Math.ceil(aiCompaniesData.length / itemsPerPage);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Industries");
+  const [filteredData, setFilteredData] = useState<AICompany[]>(aiCompaniesData);
+  const [animateRows, setAnimateRows] = useState(false);
   
-  // Get current items
+  const itemsPerPage = 10;
+  
+  // Filter data based on search and category
+  useEffect(() => {
+    let filtered = aiCompaniesData;
+    
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(company => 
+        company.name.toLowerCase().includes(query) || 
+        company.category.toLowerCase().includes(query) ||
+        company.city.toLowerCase().includes(query) ||
+        company.country.toLowerCase().includes(query)
+      );
+    }
+    
+    // Apply category filter
+    if (selectedCategory !== "All Industries") {
+      filtered = filtered.filter(company => 
+        company.category === selectedCategory
+      );
+    }
+    
+    setFilteredData(filtered);
+    setPage(1); // Reset to first page when filters change
+    
+    // Trigger animation for rows
+    setAnimateRows(false);
+    setTimeout(() => setAnimateRows(true), 100);
+  }, [searchQuery, selectedCategory]);
+  
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = aiCompaniesData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   
   // Handle page change
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
+    setAnimateRows(false);
+    setTimeout(() => setAnimateRows(true), 100);
   };
+  
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setAnimateRows(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    const tableElement = document.getElementById('companies-table');
+    if (tableElement) {
+      observer.observe(tableElement);
+    }
+    
+    return () => {
+      if (tableElement) {
+        observer.unobserve(tableElement);
+      }
+    };
+  }, []);
   
   return (
     <section id="companies" className="py-16 container-custom animate-fade-in">
       <div className="mb-10 text-center">
-        <h2 className="text-3xl font-bold mb-4 text-white">Top 100 AI Companies</h2>
+        <h2 className="text-3xl font-bold mb-4 text-white space-subheader">Top 100 AI Companies</h2>
         <p className="text-foreground/70 max-w-2xl mx-auto">
           Explore the leading companies shaping the future of artificial intelligence
         </p>
       </div>
       
-      <div className="glass-dark rounded-xl p-2 border border-white/5 shadow-xl overflow-hidden backdrop-blur-sm bg-black/40">
+      {/* Filter Bar */}
+      <div className="mb-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 p-4 bg-gradient-to-r from-[#0B0B2A] to-[#0c162f] rounded-xl border border-white/10 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-md">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-300/60 h-4 w-4" />
+          <Input
+            className="pl-10 bg-black/30 border-white/10 text-white focus:border-cyan-300/50 focus:ring-1 focus:ring-cyan-300/30 transition-all rounded-lg"
+            placeholder="Search companies, categories, locations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="relative">
+          <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-300/60 h-4 w-4" />
+          <select
+            className="pl-10 py-2 pr-4 rounded-lg bg-black/30 border border-white/10 text-white focus:border-cyan-300/50 focus:ring-1 focus:ring-cyan-300/30 transition-all appearance-none"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {industryCategories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <svg className="h-4 w-4 text-cyan-300/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div 
+        id="companies-table"
+        className="glass-dark rounded-xl p-2 border border-white/20 shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden backdrop-blur-sm bg-gradient-to-b from-[#0c101a] to-black/60"
+      >
         <div className="overflow-x-auto">
           <Table>
             <TableCaption className="text-foreground/60">
-              {`Showing ${indexOfFirstItem + 1}-${Math.min(indexOfLastItem, aiCompaniesData.length)} of ${aiCompaniesData.length} companies`}
+              {filteredData.length === 0 
+                ? "No matching companies found" 
+                : `Showing ${indexOfFirstItem + 1}-${Math.min(indexOfLastItem, filteredData.length)} of ${filteredData.length} companies`
+              }
             </TableCaption>
             <TableHeader>
-              <TableRow className="border-white/10 hover:bg-white/5">
-                <TableHead className="text-left font-semibold text-primary w-12">#</TableHead>
-                <TableHead className="text-left font-semibold text-primary">Company</TableHead>
-                <TableHead className="text-left font-semibold text-primary">Category</TableHead>
-                <TableHead className="text-left font-semibold text-primary">City</TableHead>
-                <TableHead className="text-left font-semibold text-primary">Country</TableHead>
+              <TableRow className="border-cyan-500/20 hover:bg-white/5 transform translate-z-0 transition-all">
+                <TableHead className="text-left font-bold text-cyan-300 w-12 py-5">#</TableHead>
+                <TableHead className="text-left font-bold text-cyan-300">Company</TableHead>
+                <TableHead className="text-left font-bold text-cyan-300">Category</TableHead>
+                <TableHead className="text-left font-bold text-cyan-300">City</TableHead>
+                <TableHead className="text-left font-bold text-cyan-300">Country</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentItems.map((company) => (
+              {currentItems.map((company, index) => (
                 <TableRow 
                   key={company.id} 
-                  className="border-white/5 hover:bg-white/5 transition-colors duration-200"
+                  className={`company-row border-white/5 transition-all duration-300 hover:bg-gradient-to-r from-white/5 to-transparent hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(6,182,212,0.1)] ${animateRows ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  style={{ 
+                    transitionDelay: `${index * 50}ms`,
+                    transformStyle: 'preserve-3d',
+                  }}
                 >
                   <TableCell className="font-mono text-white/70">{company.id}</TableCell>
                   <TableCell className="font-medium text-white">{company.name}</TableCell>
@@ -193,30 +313,44 @@ const CompaniesTable = () => {
               {page > 1 && (
                 <PaginationItem>
                   <PaginationPrevious 
-                    className="text-primary hover:text-white hover:bg-primary/20 border-white/10" 
+                    className="text-cyan-300 hover:text-white hover:bg-cyan-500/20 border-white/10" 
                     onClick={() => handlePageChange(page - 1)} 
                   />
                 </PaginationItem>
               )}
               
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink 
-                    isActive={page === index + 1}
-                    className={page === index + 1 
-                      ? "bg-primary/20 text-white border-white/20" 
-                      : "text-white/70 hover:text-white hover:bg-white/10 border-white/10"}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
+                // Show pages around the current page
+                let pageNum = page;
+                if (totalPages <= 5) {
+                  pageNum = index + 1;
+                } else if (page <= 3) {
+                  pageNum = index + 1;
+                } else if (page >= totalPages - 2) {
+                  pageNum = totalPages - 4 + index;
+                } else {
+                  pageNum = page - 2 + index;
+                }
+                
+                return (
+                  <PaginationItem key={index}>
+                    <PaginationLink 
+                      isActive={page === pageNum}
+                      className={page === pageNum 
+                        ? "bg-cyan-500/20 text-white border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.2)]" 
+                        : "text-white/70 hover:text-white hover:bg-white/10 border-white/10"}
+                      onClick={() => handlePageChange(pageNum)}
+                    >
+                      {pageNum}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
               
               {page < totalPages && (
                 <PaginationItem>
                   <PaginationNext 
-                    className="text-primary hover:text-white hover:bg-primary/20 border-white/10" 
+                    className="text-cyan-300 hover:text-white hover:bg-cyan-500/20 border-white/10" 
                     onClick={() => handlePageChange(page + 1)} 
                   />
                 </PaginationItem>

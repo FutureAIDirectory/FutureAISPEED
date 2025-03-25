@@ -71,12 +71,62 @@ const SpaceBackground: React.FC = () => {
       });
     };
     
+    // Apply 3D tilt effect to company rows
+    const apply3DTiltEffect = () => {
+      const rows = document.querySelectorAll('.company-row');
+      
+      rows.forEach(row => {
+        row.addEventListener('mousemove', (e: any) => {
+          const rect = row.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          // Calculate tilt based on mouse position
+          const tiltX = ((y - centerY) / centerY) * 5; // Max 5 degrees tilt
+          const tiltY = ((centerX - x) / centerX) * 5;
+          
+          // Apply 3D transform
+          (row as HTMLElement).style.transform = 
+            `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+          
+          // Add subtle highlight based on mouse position
+          const percentX = (x / rect.width) * 100;
+          const percentY = (y / rect.height) * 100;
+          (row as HTMLElement).style.background = 
+            `linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 50%), 
+             radial-gradient(circle at ${percentX}% ${percentY}%, rgba(6, 182, 212, 0.1) 0%, transparent 50%)`;
+        });
+        
+        row.addEventListener('mouseleave', () => {
+          (row as HTMLElement).style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+          (row as HTMLElement).style.background = 'transparent';
+        });
+      });
+    };
+    
     createCursorTrail();
     handleParallaxScroll();
+    
+    // Apply 3D effect with a slight delay to ensure DOM is ready
+    setTimeout(apply3DTiltEffect, 500);
+    
+    // Reapply 3D effect when table changes (for pagination)
+    const observer = new MutationObserver(() => {
+      setTimeout(apply3DTiltEffect, 300);
+    });
+    
+    const tableBody = document.querySelector('tbody');
+    if (tableBody) {
+      observer.observe(tableBody, { childList: true, subtree: true });
+    }
     
     return () => {
       // Clean up cursor trails on unmount
       document.querySelectorAll('.cursor-trail').forEach(el => el.remove());
+      observer.disconnect();
     };
   }, []);
   
