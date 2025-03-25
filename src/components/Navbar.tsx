@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import SearchBar from './SearchBar';
 
@@ -7,6 +7,7 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,14 +18,39 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Add 3D effect to nav links
+  useEffect(() => {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach((link) => {
+      link.addEventListener('mousemove', (e: any) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * 5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+        
+        (link as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(5px)`;
+      });
+      
+      link.addEventListener('mouseleave', () => {
+        (link as HTMLElement).style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+      });
+    });
+  }, []);
+
   return (
     <header 
+      ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'glass py-3' : 'py-5'
       }`}
     >
       <div className="container-custom flex items-center justify-between">
-        <a href="/" className="text-xl font-semibold tracking-tight text-primary">
+        <a href="/" className="text-xl font-semibold tracking-tight text-primary space-subheader">
           Future AI Directory
         </a>
         

@@ -1,14 +1,16 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FadeIn } from './Animations';
 
 const HeroSection: React.FC = () => {
+  const headerRef = useRef<HTMLHeadingElement>(null);
+  
   // Apply the galaxy card effect to the CTA buttons
   useEffect(() => {
     const applyGalaxyEffect = (selector: string) => {
       const elements = document.querySelectorAll(selector);
       
-      elements.forEach(el => {
+      elements.forEach((el) => {
         el.addEventListener('mousemove', (e: any) => {
           const rect = el.getBoundingClientRect();
           const x = e.clientX - rect.left;
@@ -19,23 +21,30 @@ const HeroSection: React.FC = () => {
           const rotateX = (y - centerY) / 20;
           const rotateY = (centerX - x) / 20;
           
-          el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          (el as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
         
         el.addEventListener('mouseleave', () => {
-          el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+          (el as HTMLElement).style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
         });
       });
     };
     
     applyGalaxyEffect('.btn-primary');
     applyGalaxyEffect('.btn-secondary');
+    
+    // Add 3D tilt effect to the main header
+    const header = headerRef.current;
+    if (header) {
+      header.classList.add('space-header');
+    }
   }, []);
 
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
       {/* Star Background */}
       <div className="absolute inset-0 -z-10 generate-stars"></div>
+      <div className="starry-background"></div>
       
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -50,7 +59,10 @@ const HeroSection: React.FC = () => {
             Discover the future of AI
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+          <h1 
+            ref={headerRef}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 space-header"
+          >
             Find the perfect AI tool for your next project
           </h1>
           

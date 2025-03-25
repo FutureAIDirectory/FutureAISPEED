@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import CategoryFilter from '../components/CategoryFilter';
@@ -52,7 +52,7 @@ const Index: React.FC = () => {
   const applyGalaxyCardEffect = () => {
     const cards = document.querySelectorAll('.galaxy-card');
     
-    cards.forEach(card => {
+    cards.forEach((card) => {
       card.addEventListener('mousemove', (e: any) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -63,7 +63,7 @@ const Index: React.FC = () => {
         const rotateX = (y - centerY) / 15;
         const rotateY = (centerX - x) / 15;
         
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        (card as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         
         const glowX = (x / rect.width) * 100;
         const glowY = (y / rect.height) * 100;
@@ -74,8 +74,29 @@ const Index: React.FC = () => {
       });
       
       card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        (card as HTMLElement).style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
         (card as HTMLElement).style.background = 'linear-gradient(145deg, rgba(26, 31, 44, 0.9) 0%, rgba(5, 5, 7, 0.95) 100%)';
+      });
+    });
+
+    // Apply 3D tilt effect to space-subheader elements
+    const subheaders = document.querySelectorAll('.space-subheader');
+    subheaders.forEach((header) => {
+      header.addEventListener('mousemove', (e: any) => {
+        const rect = header.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * 10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        
+        (header as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      
+      header.addEventListener('mouseleave', () => {
+        (header as HTMLElement).style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
       });
     });
   };
@@ -115,16 +136,25 @@ const Index: React.FC = () => {
         <HeroSection />
         
         <ScrollAnimation>
-          <CategoryFilter onCategoryChange={handleCategoryChange} />
+          <div className="container-custom py-12">
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Browse Categories</h2>
+            <CategoryFilter onCategoryChange={handleCategoryChange} />
+          </div>
         </ScrollAnimation>
         
         <ScrollAnimation>
-          <ToolGrid category={activeCategory} searchQuery={searchQuery} />
+          <div className="container-custom py-12">
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Discover AI Tools</h2>
+            <ToolGrid category={activeCategory} searchQuery={searchQuery} />
+          </div>
         </ScrollAnimation>
         
         {/* Companies Table */}
         <ScrollAnimation>
-          <CompaniesTable />
+          <div className="container-custom py-12">
+            <h2 className="text-3xl font-bold mb-10 text-center space-subheader">Top AI Companies</h2>
+            <CompaniesTable />
+          </div>
         </ScrollAnimation>
         
         {/* About Section */}
@@ -132,7 +162,7 @@ const Index: React.FC = () => {
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="container-custom relative z-10">
             <ScrollAnimation className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6 text-white">About Future AI Directory</h2>
+              <h2 className="text-3xl font-bold mb-6 text-white space-subheader">About Future AI Directory</h2>
               <p className="text-foreground/70 mb-8">
                 Future AI Directory is a carefully curated collection of the best artificial intelligence tools available today. 
                 Our mission is to help professionals, creators, and businesses discover and leverage the power of AI to enhance their work and creative processes.
@@ -148,7 +178,7 @@ const Index: React.FC = () => {
         <section className="py-20 container-custom relative overflow-hidden mars-glow-bg">
           <div className="absolute inset-0 opacity-30 animate-subtle-pulse"></div>
           <ScrollAnimation className="max-w-3xl mx-auto text-center relative z-10">
-            <h2 className="text-3xl font-bold mb-4 text-white">Stay Updated</h2>
+            <h2 className="text-3xl font-bold mb-4 text-white space-subheader">Stay Updated</h2>
             <p className="text-foreground/70 mb-8">
               Get the latest AI tools and updates delivered directly to your inbox
             </p>
