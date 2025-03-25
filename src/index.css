@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 240 20% 3.9%;
+    --background: 240 20% 2%;
     --foreground: 0 0% 98%;
     
     --card: 240 20% 3.9%;
@@ -48,11 +48,11 @@
   }
   
   body {
-    @apply bg-[#0B0C10] text-foreground antialiased font-sans;
+    @apply bg-[#050507] text-foreground antialiased font-sans;
     background-image: 
-      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
-      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
-      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%); 
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.03) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.03) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.04) 0%, transparent 50%); 
     background-attachment: fixed;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -62,11 +62,11 @@
 
 @layer components {
   .glass {
-    @apply bg-black/30 backdrop-blur-xl border border-white/5 shadow-sm;
+    @apply bg-black/40 backdrop-blur-xl border border-white/5 shadow-sm;
   }
   
   .glass-dark {
-    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-md;
+    @apply bg-black/60 backdrop-blur-xl border border-white/10 shadow-md;
   }
   
   .card-hover {
@@ -104,17 +104,19 @@
     animation: stagger-slide-up 0.35s ease forwards;
   }
   
-  /* 3D Card Styling */
-  .3d-card {
+  /* 3D Card Styling with Global Hover Effect */
+  .galaxy-card, .3d-card {
     transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform;
   }
   
-  .3d-card:hover {
+  .galaxy-card:hover, .3d-card:hover {
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1.02, 1.02, 1.02);
   }
   
+  .galaxy-card::before,
+  .galaxy-card::after,
   .3d-card::before,
   .3d-card::after {
     content: '';
@@ -127,18 +129,20 @@
     transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
+  .galaxy-card:hover::before,
+  .galaxy-card:hover::after,
   .3d-card:hover::before,
   .3d-card:hover::after {
     opacity: 1;
   }
   
-  /* Galaxy Theme */
+  /* Galaxy Theme - darker with stars */
   .galaxy-bg {
-    background-color: #0B0C10;
+    background-color: #050507;
     background-image: 
-      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
-      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
-      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%);
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.03) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.03) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.04) 0%, transparent 50%);
     background-attachment: fixed;
   }
   
@@ -152,12 +156,56 @@
   }
   
   @keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.8; }
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.5; }
   }
 
+  .space-station-bg {
+    background-color: #050507;
+    background-image: 
+      url('https://images.unsplash.com/photo-1454789548928-9efd52dc4031?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80'), 
+      radial-gradient(circle at center, rgba(90, 90, 255, 0.04) 0%, transparent 70%);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-blend-mode: screen;
+    position: relative;
+  }
+  
+  .mars-glow-bg {
+    background-color: #050507;
+    background-image: 
+      radial-gradient(circle at center, rgba(255, 80, 50, 0.15) 0%, transparent 70%),
+      radial-gradient(circle at 70% 30%, rgba(255, 100, 50, 0.1) 0%, transparent 60%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mars-glow-bg::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 80, 50, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 20%;
+    right: 15%;
+    filter: blur(40px);
+    animation: mars-pulse 8s infinite alternate;
+  }
+  
+  @keyframes mars-pulse {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+  }
+  
   .galaxy-card {
-    @apply bg-gradient-to-br from-[#1A1F2C]/80 to-[#0B0C10]/90 backdrop-blur-sm border border-[#252A37]/50 shadow-xl;
+    @apply bg-gradient-to-br from-[#16171c]/80 to-[#050507]/90 backdrop-blur-sm border border-[#252A37]/50 shadow-xl;
   }
   
   @keyframes stagger-slide-up {
@@ -202,6 +250,18 @@
     animation: float 12s ease-in-out infinite;
   }
   
+  /* Scroll animation for section headers */
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .scroll-animate.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
   .stagger-animate > *:nth-child(1) { animation-delay: 0.1s; }
   .stagger-animate > *:nth-child(2) { animation-delay: 0.2s; }
   .stagger-animate > *:nth-child(3) { animation-delay: 0.3s; }
@@ -217,11 +277,26 @@
   }
   
   .bg-galaxy {
-    background-color: #0B0C10;
+    background-color: #050507;
     background-image: 
-      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
-      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
-      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%);
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.03) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.03) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.04) 0%, transparent 50%);
+  }
+  
+  .generate-stars {
+    position: relative;
+  }
+  
+  .generate-stars::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: 100px 100px;
+    opacity: 0.1;
   }
 }
-

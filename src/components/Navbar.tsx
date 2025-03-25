@@ -33,6 +33,8 @@ const Navbar: React.FC = () => {
           <a href="#tools" className="nav-link">Browse</a>
           <a href="#categories" className="nav-link">Categories</a>
           <a href="#about" className="nav-link">About</a>
+          <a href="https://solutions.futureaidirectory.com" target="_blank" rel="noopener noreferrer" className="nav-link">Prompt Directory</a>
+          <a href="https://blogs.futureaidirectory.com" target="_blank" rel="noopener noreferrer" className="nav-link">Blogs</a>
           <button 
             onClick={() => setShowSearch(!showSearch)}
             className="p-2 rounded-full text-foreground/70 hover:text-foreground hover:bg-secondary transition-colors"
@@ -59,6 +61,8 @@ const Navbar: React.FC = () => {
             <a href="#tools" className="block py-2 text-foreground/80 hover:text-foreground">Browse</a>
             <a href="#categories" className="block py-2 text-foreground/80 hover:text-foreground">Categories</a>
             <a href="#about" className="block py-2 text-foreground/80 hover:text-foreground">About</a>
+            <a href="https://solutions.futureaidirectory.com" target="_blank" rel="noopener noreferrer" className="block py-2 text-foreground/80 hover:text-foreground">Prompt Directory</a>
+            <a href="https://blogs.futureaidirectory.com" target="_blank" rel="noopener noreferrer" className="block py-2 text-foreground/80 hover:text-foreground">Blogs</a>
             <button 
               onClick={() => {
                 setShowSearch(!showSearch);
