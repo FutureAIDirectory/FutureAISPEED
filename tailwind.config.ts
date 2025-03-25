@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -59,6 +58,9 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
@@ -95,6 +97,10 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-5px)' }
+				},
+				'subtle-pulse': {
+					'0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+					'50%': { opacity: '1', transform: 'scale(1.02)' },
 				}
 			},
 			animation: {
@@ -106,7 +112,8 @@ export default {
 				'slide-down': 'slide-down 0.5s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'blur-in': 'blur-in 0.4s ease-out',
-				'float': 'float 3s ease-in-out infinite'
+				'float': 'float 3s ease-in-out infinite',
+				'subtle-pulse': 'subtle-pulse 8s ease-in-out infinite',
 			},
 			fontFamily: {
 				sans: ['SF Pro Display', 'system-ui', 'sans-serif'],
