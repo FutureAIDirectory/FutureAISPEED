@@ -7,6 +7,7 @@ import ToolGrid from '../components/ToolGrid';
 import CompaniesTable from '../components/CompaniesTable';
 import Footer from '../components/Footer';
 import ScrollAnimation from '../components/ScrollAnimation';
+import SpaceBackground from '../components/SpaceBackground';
 import { FadeIn } from '../components/Animations';
 
 // Generate star elements for the background
@@ -130,6 +131,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-galaxy generate-stars">
       <Navbar />
+      <SpaceBackground />
       <StarField count={150} />
       
       <main className="flex-grow">
