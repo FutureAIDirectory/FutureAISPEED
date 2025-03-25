@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				galaxy: {
+					dark: '#0B0C10',
+					blue: '#1F2833',
+					accent: '#7597de',
+					purple: '#6C63FF',
+					glow: '#66FCF1'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -60,6 +68,8 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'galaxy-glow': 'radial-gradient(circle at center, rgba(102, 252, 241, 0.05) 0%, transparent 70%)',
+				'galaxy-purple': 'radial-gradient(circle at center, rgba(108, 99, 255, 0.05) 0%, transparent 70%)'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -101,6 +111,12 @@ export default {
 				'subtle-pulse': {
 					'0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
 					'50%': { opacity: '1', transform: 'scale(1.02)' },
+				},
+				'galaxy-float': {
+					'0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+					'25%': { transform: 'translateY(-5px) rotate(0.5deg)' },
+					'50%': { transform: 'translateY(0) rotate(0deg)' },
+					'75%': { transform: 'translateY(5px) rotate(-0.5deg)' }
 				}
 			},
 			animation: {
@@ -114,6 +130,7 @@ export default {
 				'blur-in': 'blur-in 0.4s ease-out',
 				'float': 'float 3s ease-in-out infinite',
 				'subtle-pulse': 'subtle-pulse 8s ease-in-out infinite',
+				'galaxy-float': 'galaxy-float 12s ease-in-out infinite'
 			},
 			fontFamily: {
 				sans: ['SF Pro Display', 'system-ui', 'sans-serif'],

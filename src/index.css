@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 240 10% 3.9%;
+    --background: 240 20% 3.9%;
+    --foreground: 0 0% 98%;
     
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 240 20% 3.9%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 240 20% 3.9%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 252 87% 81%;
+    --primary-foreground: 240 20% 3.9%;
     
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 240 12% 12%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 240 12% 13%;
+    --muted-foreground: 240 5% 64.9%;
     
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 252 87% 81%;
+    --accent-foreground: 240 20% 3.9%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --border: 240 8% 15%;
+    --input: 240 8% 15%;
+    --ring: 252 87% 81%;
     
     --radius: 0.75rem;
   }
@@ -47,7 +48,12 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased font-sans;
+    @apply bg-[#0B0C10] text-foreground antialiased font-sans;
+    background-image: 
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%); 
+    background-attachment: fixed;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -56,11 +62,11 @@
 
 @layer components {
   .glass {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm;
+    @apply bg-black/30 backdrop-blur-xl border border-white/5 shadow-sm;
   }
   
   .glass-dark {
-    @apply bg-black/10 backdrop-blur-xl border border-white/10 shadow-md;
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-md;
   }
   
   .card-hover {
@@ -116,7 +122,7 @@
     inset: 0;
     z-index: -1;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(100, 100, 100, 0.1), rgba(0, 0, 0, 0));
+    background: linear-gradient(135deg, rgba(100, 100, 255, 0.15), rgba(0, 0, 0, 0));
     opacity: 0;
     transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
@@ -124,6 +130,34 @@
   .3d-card:hover::before,
   .3d-card:hover::after {
     opacity: 1;
+  }
+  
+  /* Galaxy Theme */
+  .galaxy-bg {
+    background-color: #0B0C10;
+    background-image: 
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+  
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle 4s infinite;
+  }
+  
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+  }
+
+  .galaxy-card {
+    @apply bg-gradient-to-br from-[#1A1F2C]/80 to-[#0B0C10]/90 backdrop-blur-sm border border-[#252A37]/50 shadow-xl;
   }
   
   @keyframes stagger-slide-up {
@@ -148,6 +182,26 @@
     animation: subtle-pulse 8s ease-in-out infinite;
   }
   
+  /* Galaxy floating animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-5px) rotate(0.5deg);
+    }
+    50% {
+      transform: translateY(0) rotate(0deg);
+    }
+    75% {
+      transform: translateY(5px) rotate(-0.5deg);
+    }
+  }
+  
+  .animate-float {
+    animation: float 12s ease-in-out infinite;
+  }
+  
   .stagger-animate > *:nth-child(1) { animation-delay: 0.1s; }
   .stagger-animate > *:nth-child(2) { animation-delay: 0.2s; }
   .stagger-animate > *:nth-child(3) { animation-delay: 0.3s; }
@@ -161,4 +215,13 @@
   .bg-gradient-radial {
     background-image: radial-gradient(var(--tw-gradient-stops));
   }
+  
+  .bg-galaxy {
+    background-color: #0B0C10;
+    background-image: 
+      radial-gradient(circle at 80% 0%, rgba(100, 70, 255, 0.05) 0%, transparent 35%),
+      radial-gradient(circle at 20% 20%, rgba(65, 182, 255, 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(90, 90, 255, 0.07) 0%, transparent 50%);
+  }
 }
+

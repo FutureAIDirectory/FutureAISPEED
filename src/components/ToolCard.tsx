@@ -30,16 +30,25 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
       // Calculate rotation based on mouse position
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / 10;
-      const rotateY = (centerX - x) / 10;
+      const rotateX = (y - centerY) / 15;
+      const rotateY = (centerX - x) / 15;
       
       // Apply the transformation
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      
+      // Create a subtle glow effect based on mouse position
+      const glowX = (x / rect.width) * 100;
+      const glowY = (y / rect.height) * 100;
+      card.style.background = `
+        radial-gradient(circle at ${glowX}% ${glowY}%, rgba(118, 151, 222, 0.1) 0%, transparent 50%),
+        linear-gradient(145deg, rgba(26, 31, 44, 0.9) 0%, rgba(11, 12, 16, 0.95) 100%)
+      `;
     };
     
     const handleMouseLeave = () => {
       // Reset the transform when mouse leaves
       card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      card.style.background = 'linear-gradient(145deg, rgba(26, 31, 44, 0.9) 0%, rgba(11, 12, 16, 0.95) 100%)';
     };
     
     card.addEventListener('mousemove', handleMouseMove);
@@ -55,29 +64,65 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const getPricingInfo = (type: 'free' | 'freemium' | 'paid') => {
     switch (type) {
       case 'free':
-        return { label: 'Free', bgColor: 'bg-green-100', textColor: 'text-green-800' };
+        return { label: 'Free', bgColor: 'bg-green-900/40', textColor: 'text-green-400' };
       case 'freemium':
-        return { label: 'Freemium', bgColor: 'bg-blue-100', textColor: 'text-blue-800' };
+        return { label: 'Freemium', bgColor: 'bg-blue-900/40', textColor: 'text-blue-400' };
       case 'paid':
-        return { label: 'Paid', bgColor: 'bg-purple-100', textColor: 'text-purple-800' };
+        return { label: 'Paid', bgColor: 'bg-purple-900/40', textColor: 'text-purple-400' };
     }
   };
   
   const pricing = getPricingInfo(tool.pricingType);
   
+  // Generate random star positions for a starry background effect
+  const generateStars = (count: number) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const size = Math.random() * 1.5 + 0.5;
+      const delay = Math.random() * 5;
+      stars.push(
+        <div 
+          key={i}
+          className="absolute rounded-full bg-white opacity-60 animate-pulse"
+          style={{ 
+            top: `${top}%`, 
+            left: `${left}%`, 
+            width: `${size}px`, 
+            height: `${size}px`,
+            animationDelay: `${delay}s`,
+            animationDuration: '3s'
+          }}
+        />
+      );
+    }
+    return stars;
+  };
+  
   return (
     <div 
       ref={cardRef}
-      className="group h-full overflow-hidden rounded-xl card-hover 3d-card"
+      className="group h-full overflow-hidden rounded-xl card-hover 3d-card border border-white/5 shadow-lg animate-float"
+      style={{ 
+        background: 'linear-gradient(145deg, rgba(26, 31, 44, 0.9) 0%, rgba(11, 12, 16, 0.95) 100%)',
+        backdropFilter: 'blur(8px)'
+      }}
     >
-      <div className="relative h-full p-5 bg-black bg-opacity-90 border border-white/10">
+      <div className="relative h-full p-5 z-10 overflow-hidden">
+        {/* Stars background effect */}
+        {generateStars(15)}
+        
         {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-radial from-[#222222] to-black opacity-90 z-0 animate-subtle-pulse"></div>
+        <div className="absolute inset-0 opacity-30 z-0 animate-subtle-pulse">
+          <div className="absolute inset-0 bg-gradient-radial from-galaxy-blue/10 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-galaxy-purple/10 to-transparent"></div>
+        </div>
         
         {/* Content with z-index to appear above the background */}
         <div className="relative z-10">
           <div className="flex justify-between items-start mb-2">
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${pricing.bgColor} ${pricing.textColor}`}>
+            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${pricing.bgColor} ${pricing.textColor} border border-white/5`}>
               {pricing.label}
             </span>
             <span className="text-xs text-white/60">{tool.category}</span>
@@ -96,7 +141,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+              className="inline-flex items-center text-sm font-medium text-primary hover:text-white transition-colors"
             >
               Visit Website
               <svg 
